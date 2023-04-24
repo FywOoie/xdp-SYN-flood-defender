@@ -7,4 +7,4 @@ build: generate
 generate: export BPF_CLANG:=$(CLANG)
 generate: export BPF_CFLAGS:=$(CFLAGS)
 generate:
-	go generate ./...
+	go generate syn_flood_defender.go
