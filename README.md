@@ -26,6 +26,9 @@ make
 go run syn_flood_defender.go
 or
 ./defender
+cd ../attack
+pip install scapy
+python syn_flood.py
 ```
 
 ## Reference:
