@@ -70,7 +70,6 @@ SEC("xdp")
 int xdp_prog_func(struct xdp_md *ctx) {
 	__u32 ip;
 	if (!parse_ip_src_addr(ctx, &ip)) {
-        bpf_debug("parse_ip_src_addr failed\n");
 		goto done;
 	}
 

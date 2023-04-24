@@ -1,8 +1,7 @@
 # xdp-SYN-flood-defender
-A simple defender using eBPF XDP
-Reference:
-- [Hello World eBPF program](https://github.com/ns1/xdp-workshop)
-- [cilium/ebpf XDP example](https://github.com/cilium/ebpf/tree/master/examples/xdp)
+A simple ddos defender using eBPF and cilium/eBPF library.
+- a SYN counter: use eBPF map to count number of packets of each IPs
+- SYN flood defender: explore one more step to block hosts that send SYN packets too fast
 
 ## Environment
 ```
@@ -28,3 +27,7 @@ go run syn_flood_defender.go
 or
 ./defender
 ```
+
+## Reference:
+- [Hello World eBPF program](https://github.com/ns1/xdp-workshop)
+- [cilium/ebpf XDP example](https://github.com/cilium/ebpf/tree/master/examples/xdp)

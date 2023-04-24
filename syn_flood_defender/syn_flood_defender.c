@@ -8,7 +8,7 @@
 #define IPPROTO_TCP 6
 #endif
 
-#define MAX_MAP_ENTRIES 2048
+#define MAX_MAP_ENTRIES 1024
 #define TIME_WINDOW_NS (5LL * 1000000000LL)
 #define PACKET_RATE_LIMIT 2 // packets per second
 #define MAX_KEY_LEN 100
@@ -86,7 +86,6 @@ SEC("xdp")
 int xdp_prog_func(struct xdp_md *ctx) {
 	__u32 ip;
 	if (!parse_ip_src_addr(ctx, &ip)) {
-        bpf_debug("parse_ip_src_addr failed\n");
 		goto done;
 	}
 
@@ -99,10 +98,12 @@ int xdp_prog_func(struct xdp_md *ctx) {
     // Parse the TCP header
     struct tcphdr *tcp_hdr = (void *)(ip_hdr + 1);
     if ((void *)(tcp_hdr + 1) > data_end) {
+        bpf_debug("tcp_hdr + 1 > data_end\n");
         return 0;
     }
     
     // check if the packet is a SYN packet
+    bpf_debug("tcp_hdr.syn: %d, tcp_hdr.ack: %d", tcp_hdr->syn, tcp_hdr->ack);
     if (tcp_hdr->syn && !tcp_hdr->ack) {
         // syn packet   
         struct ip_stats *stats = bpf_map_lookup_elem(&xdp_stats_map, &ip);

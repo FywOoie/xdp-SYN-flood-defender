@@ -40,7 +40,6 @@ def main():
         send(packet, verbose=0, iface="lo")
         print(f"Sent number {count} packets")
         count += 1
-        time.sleep(1)
 
 if __name__ == "__main__":
     main()
