@@ -1,6 +1,6 @@
 //go:build ignore
 
-#include "headers/common.h"
+#include "../headers/common.h"
 #include <bpf/bpf_endian.h>
 #include <bpf/bpf_helpers.h>
 #include <linux/tcp.h>
