@@ -3,3 +3,6 @@
 # applications
 counter
 defender
+
+# binaries
+*.o

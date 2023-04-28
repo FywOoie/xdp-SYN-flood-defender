@@ -110,10 +110,10 @@ int xdp_prog_func(struct xdp_md *ctx) {
         __u64 curr_ts = bpf_ktime_get_ns();
         if (!stats) {
             // No entry in the map for this IP address yet, so create an new entry.
-            struct ip_stats init_pkt_stats = {
-                .first_packet_ts = curr_ts,
-                .packet_count = 1,
-            };
+            struct ip_stats init_pkt_stats;
+            __builtin_memset(&init_pkt_stats, 0, sizeof(init_pkt_stats));
+            init_pkt_stats.first_packet_ts = curr_ts;
+            init_pkt_stats.packet_count = 1;
             bpf_map_update_elem(&xdp_stats_map, &ip, &init_pkt_stats, BPF_ANY);
         } else {
             // Entry already exists for this IP address,
