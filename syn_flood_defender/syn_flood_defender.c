@@ -10,7 +10,7 @@
 
 #define MAX_MAP_ENTRIES 1024
 #define TIME_WINDOW_NS (5LL * 1000000000LL)
-#define PACKET_RATE_LIMIT 2 // packets per second
+#define PACKET_RATE_LIMIT 10 // packets per second
 #define MAX_KEY_LEN 100
 #define MAX_VALUE_LEN 10
 
@@ -103,7 +103,7 @@ int xdp_prog_func(struct xdp_md *ctx) {
     }
     
     // check if the packet is a SYN packet
-    bpf_debug("tcp_hdr.syn: %d, tcp_hdr.ack: %d", tcp_hdr->syn, tcp_hdr->ack);
+    // bpf_debug("tcp_hdr.syn: %d, tcp_hdr.ack: %d", tcp_hdr->syn, tcp_hdr->ack);
     if (tcp_hdr->syn && !tcp_hdr->ack) {
         // syn packet   
         struct ip_stats *stats = bpf_map_lookup_elem(&xdp_stats_map, &ip);
@@ -123,9 +123,9 @@ int xdp_prog_func(struct xdp_md *ctx) {
             if (elapsed_ns < TIME_WINDOW_NS)
             {
                 stats->packet_count++;
-                __u64 packet_rate = stats->packet_count * 1000000000 / elapsed_ns;
+                __u64 packet_rate = stats->packet_count; // temporarily make count be the rate for attack script has speed limit
 
-                bpf_debug("packet_rate: %d", packet_rate);
+                bpf_debug("stats->packet_count %d packet_rate: %d", stats->packet_count, packet_rate);
                 if (packet_rate > PACKET_RATE_LIMIT)
                 {
                     bpf_map_update_elem(&xdp_banned_ips_map, &ip, &curr_ts, BPF_ANY);
