@@ -7,7 +7,6 @@ A simple ddos defender using eBPF and cilium/eBPF library.
 ```
 sudo apt-get update
 sudo apt-get install -y make clang llvm libelf-dev libbpf-dev bpfcc-tools libbpfcc-dev
-v beta
 ```
 
 ## SYN counter using XDP
